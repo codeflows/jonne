@@ -1,21 +1,34 @@
 # Jonne
 
-**TODO: Add description**
+A simple Elasticsearch->Slack alerting tool written in Elixir.
 
-## Installation
+## Features and non-features
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `jonne` to your list of dependencies in `mix.exs`:
+- Indices are assumed to be named per date in the "logstash format", e.g. `my-index-2018.01.31`
+- Indices are queried according to the client time in UTC
+- Stateless, only messages arriving after Jonne starts up are delivered
 
-```elixir
-def deps do
-  [
-    {:jonne, "~> 0.1.0"}
-  ]
-end
+## TODO
+
+- Alert message extraction / formatting should be configurable
+- Buffer unsent messages
+- Don't repeat the same message (buffering in notifier?)
+- Prometheus metrics endpoint
+
+## Usage
+
+```bash
+brew install elixir
+
+# Run app in development mode
+mix run --no-halt
+
+# Run unit tests
+mix test
+
+# Start application in REPL
+iex -S mix
+
+iex> r Jonne.Poller              # Reload module
+iex> Application.start(:jonne)   # Restart app after crash
 ```
-
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/jonne](https://hexdocs.pm/jonne).
-
