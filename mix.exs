@@ -15,7 +15,7 @@ defmodule Jonne.Mixfile do
 
   def application do
     [
-      extra_applications: [:logger, :tzdata],
+      extra_applications: [:logger, :tzdata, :cowboy],
       mod: {Jonne.Application, []}
     ]
   end
@@ -25,6 +25,7 @@ defmodule Jonne.Mixfile do
       {:httpoison, "~> 0.13"},
       {:poison, "~> 3.1"},
       {:timex, "~> 3.1"},
+      {:cowboy, "~> 2.2"},
       {:mox, "~> 0.3", only: :test}
     ]
   end
