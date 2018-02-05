@@ -5,7 +5,13 @@ defmodule Jonne.Statistics do
   plug :dispatch
 
   get "/metrics" do
-    send_resp(conn, 200, "world")
+    send_resp(conn, 200,
+      """
+      # HELP matching_messages_total Total number of matching messages
+      # TYPE matching_messages_total counter
+      matching_messages_total 1
+      """
+    )
   end
 
   match _ do
