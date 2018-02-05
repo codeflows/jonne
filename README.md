@@ -31,4 +31,8 @@ iex -S mix
 
 iex> r Jonne.Poller              # Reload module
 iex> Application.start(:jonne)   # Restart app after crash
+
+# Build and run in Docker
+docker build -t jonne .
+docker run --env-file .env jonne
 ```

@@ -30,5 +30,12 @@ defmodule Jonne.Coordinator do
     Process.send_after(self(), :poll, delay_in_ms)
   end
 
-  defp poll_interval() do; Application.get_env(:jonne, :elasticsearch_poll_interval, 10_000); end
+  defp poll_interval() do
+    interval = Application.get_env(:jonne, :elasticsearch_poll_interval, 10_000)
+    if is_integer(interval) do
+      interval
+    else
+      String.to_integer(interval)
+    end
+  end
 end
