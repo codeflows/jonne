@@ -5,6 +5,8 @@ defmodule Jonne.Application do
     children = [
       Jonne.Notifier,
       Jonne.Coordinator,
+      # TODO jari: child supervisor?
+      Jonne.Statistics.MessageCounter,
       Plug.Adapters.Cowboy2.child_spec(scheme: :http, plug: Jonne.Statistics.PrometheusExporter, options: [port: 9001])
     ]
 
