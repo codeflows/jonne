@@ -3,10 +3,8 @@ defmodule Jonne.Coordinator do
   require Logger
   alias Jonne.{Searcher, Notifier, Statistics.MessageCounter}
 
-  @poll_interval Application.get_env(:jonne, :elasticsearch_poll_interval, 10_000)
-
   def start_link(_opts) do
-    Logger.info("Coordinator starting up, poll interval #{@poll_interval}ms")
+    Logger.info("Coordinator starting up, poll interval #{poll_interval()}ms")
     GenServer.start_link(__MODULE__, :ok, name: Jonne.Coordinator)
   end
 
@@ -28,7 +26,9 @@ defmodule Jonne.Coordinator do
     {:noreply, new_position}
   end
 
-  defp schedule_next_round(delay_in_ms \\ @poll_interval) do
+  defp schedule_next_round(delay_in_ms \\ poll_interval()) do
     Process.send_after(self(), :poll, delay_in_ms)
   end
+
+  defp poll_interval() do; Application.get_env(:jonne, :elasticsearch_poll_interval, 10_000); end
 end
