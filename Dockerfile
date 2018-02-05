@@ -1,6 +1,6 @@
 FROM bitwalker/alpine-elixir:1.6.1 as build
 
-COPY config ./config
+COPY ./config/prod.exs ./config/prod.exs
 COPY rel ./rel
 COPY lib ./lib
 COPY mix.exs .
