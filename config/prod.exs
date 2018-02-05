@@ -6,3 +6,6 @@ config :jonne,
   elasticsearch_query: "${ELASTICSEARCH_QUERY}",
   elasticsearch_poll_interval: "${ELASTICSEARCH_POLL_INTERVAL}",
   slack_webhook_url: "${SLACK_WEBHOOK_URL}"
+
+# Override tzdata download directory in Docker
+config :tzdata, :data_dir, "./tzdata"
