@@ -1,11 +1,7 @@
 defmodule Jonne.Searcher do
   require Logger
 
-  @elasticsearch_client Application.get_env(:jonne, :elasticsearch_client)
-  @url Application.fetch_env!(:jonne, :elasticsearch_url)
-  @index_prefix Application.fetch_env!(:jonne, :elasticsearch_index_prefix)
-  @query Application.fetch_env!(:jonne, :elasticsearch_query)
-  @sort_column Application.get_env(:jonne, :elasticsearch_sort_column, "@timestamp")
+  @elasticsearch_client Application.get_env(:jonne, :elasticsearch_client, Jonne.Elasticsearch.HttpClient)
 
   def get_initial_position(current_time) do
     current_index = index_name(current_time)
@@ -16,10 +12,10 @@ defmodule Jonne.Searcher do
 
     search = %{
       size: 1,
-      sort: [%{@sort_column => "desc"}]
+      sort: [%{elasticsearch_sort_column() => "desc"}]
     }
 
-    result = @elasticsearch_client.search(@url, [current_index], search)
+    result = @elasticsearch_client.search(elasticsearch_url(), [current_index], search)
 
     initial_sort =
       case result do
@@ -45,10 +41,10 @@ defmodule Jonne.Searcher do
     search_template = %{
       # If there are more than 1000 matches within poll_interval, messages will be dropped
       size: 1000,
-      sort: [@sort_column],
+      sort: [elasticsearch_sort_column()],
       query: %{
         query_string: %{
-          query: @query
+          query: elasticsearch_query()
         }
       }
     }
@@ -75,7 +71,7 @@ defmodule Jonne.Searcher do
       }"
     )
 
-    {:hits, hits} = @elasticsearch_client.search(@url, indices, search)
+    {:hits, hits} = @elasticsearch_client.search(elasticsearch_url(), indices, search)
 
     new_position =
       if length(hits) > 0 do
@@ -100,6 +96,11 @@ defmodule Jonne.Searcher do
 
   defp index_name(current_time) do
     date = current_time |> Timex.format!("{YYYY}.{0M}.{0D}")
-    @index_prefix <> date
+    elasticsearch_index_prefix() <> date
   end
+
+  defp elasticsearch_url() do; Application.get_env(:jonne, :elasticsearch_url); end
+  defp elasticsearch_index_prefix() do; Application.get_env(:jonne, :elasticsearch_index_prefix); end
+  defp elasticsearch_query() do; Application.get_env(:jonne, :elasticsearch_query); end
+  defp elasticsearch_sort_column() do; Application.get_env(:jonne, :elasticsearch_sort_column, "@timestamp"); end
 end

@@ -2,8 +2,6 @@ defmodule Jonne.Notifier do
   use GenServer
   require Logger
 
-  @slack_webhook_url Application.fetch_env!(:jonne, :slack_webhook_url)
-
   def start_link(_opts) do
     GenServer.start_link(__MODULE__, :ok, name: Jonne.Notifier)
   end
@@ -19,7 +17,7 @@ defmodule Jonne.Notifier do
   def handle_cast(document, _state) do
     text = document["_source"]["message"]
     case HTTPoison.post(
-           @slack_webhook_url,
+           slack_webhook_url(),
            # TODO jari: make mapping from document to alert text configurable
            Poison.encode!(%{text: text}),
            Accept: "application/json"
@@ -33,4 +31,6 @@ defmodule Jonne.Notifier do
 
     {:noreply, []}
   end
+
+  defp slack_webhook_url() do; Application.get_env(:jonne, :slack_webhook_url); end
 end
