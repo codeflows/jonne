@@ -1,10 +1,10 @@
 defmodule Jonne.Searcher do
   require Logger
 
-  @elasticsearch_client Application.get_env(:jonne, :elasticsearch_client)
-  @url Application.fetch_env!(:jonne, :elasticsearch_url)
-  @index_prefix Application.fetch_env!(:jonne, :elasticsearch_index_prefix)
-  @query Application.fetch_env!(:jonne, :elasticsearch_query)
+  @elasticsearch_client Application.get_env(:jonne, :elasticsearch_client, Jonne.Elasticsearch.HttpClient)
+  @url Application.get_env(:jonne, :elasticsearch_url, "")
+  @index_prefix Application.get_env(:jonne, :elasticsearch_index_prefix, "")
+  @query Application.get_env(:jonne, :elasticsearch_query, "")
   @sort_column Application.get_env(:jonne, :elasticsearch_sort_column, "@timestamp")
 
   def get_initial_position(current_time) do

@@ -1,7 +1,6 @@
 use Mix.Config
 
 config :jonne,
-  elasticsearch_client: Jonne.Elasticsearch.HttpClient,
   elasticsearch_url: "${ELASTICSEARCH_URL}",
   elasticsearch_index_prefix: "${ELASTICSEARCH_INDEX_PREFIX}",
   elasticsearch_query: "${ELASTICSEARCH_QUERY}",

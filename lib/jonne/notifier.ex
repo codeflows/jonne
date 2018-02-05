@@ -2,7 +2,7 @@ defmodule Jonne.Notifier do
   use GenServer
   require Logger
 
-  @slack_webhook_url Application.fetch_env!(:jonne, :slack_webhook_url)
+  @slack_webhook_url Application.get_env(:jonne, :slack_webhook_url, "")
 
   def start_link(_opts) do
     GenServer.start_link(__MODULE__, :ok, name: Jonne.Notifier)
