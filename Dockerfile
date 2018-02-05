@@ -18,12 +18,12 @@ RUN RELEASE_DIR=`ls -d _build/prod/rel/$APP_NAME/releases/*/` && \
     mkdir /export && \
     tar -xf "$RELEASE_DIR/$APP_NAME.tar.gz" -C /export
 
-FROM pentacent/alpine-erlang-base:latest
+FROM bitwalker/alpine-erlang:20.2.2
 
 COPY --from=build /export/ .
 USER default
 
 EXPOSE 9001
 
-ENTRYPOINT ["/opt/app/bin/$APP_NAME"]
+ENTRYPOINT ["/opt/app/bin/jonne"]
 CMD ["foreground"]
