@@ -26,6 +26,7 @@ defmodule Jonne.Mixfile do
       {:poison, "~> 3.1"},
       {:timex, "~> 3.1"},
       {:cowboy, "~> 2.2"},
+      {:plug, "~> 1.5.0-rc.1"},
       {:mox, "~> 0.3", only: :test}
     ]
   end
