@@ -1,4 +1,4 @@
-defmodule Jonne.Statistics do
+defmodule Jonne.Statistics.PrometheusExporter do
   use Plug.Router
 
   plug :match
