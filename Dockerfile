@@ -9,7 +9,6 @@ COPY mix.lock .
 
 ENV MIX_ENV=prod
 ENV APP_NAME=jonne
-ENV REPLACE_OS_VARS=true
 
 RUN mix deps.get && \
     mix release
@@ -25,5 +24,4 @@ USER default
 
 EXPOSE 9001
 
-ENTRYPOINT ["/opt/app/bin/jonne"]
-CMD ["foreground"]
+CMD REPLACE_OS_VARS=true /opt/app/bin/jonne foreground
