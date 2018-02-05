@@ -27,6 +27,7 @@ defmodule Jonne.Mixfile do
       {:timex, "~> 3.1"},
       {:cowboy, "~> 2.2"},
       {:plug, "~> 1.5.0-rc.1"},
+      {:distillery, "~> 1.5"},
       {:mox, "~> 0.3", only: :test}
     ]
   end
