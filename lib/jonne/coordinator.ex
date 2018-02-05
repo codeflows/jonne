@@ -1,7 +1,7 @@
 defmodule Jonne.Coordinator do
   use GenServer
   require Logger
-  alias Jonne.{Searcher, Notifier}
+  alias Jonne.{Searcher, Notifier, Statistics.MessageCounter}
 
   @poll_interval Application.get_env(:jonne, :elasticsearch_poll_interval, 10_000)
 
@@ -18,7 +18,11 @@ defmodule Jonne.Coordinator do
 
   def handle_info(:poll, position) do
     %{position: new_position, hits: hits} = Searcher.get_new_messages(Timex.now(), position)
-    hits |> Enum.each(&Notifier.notify/1)
+
+    Enum.each(hits, fn document ->
+      Notifier.notify(document)
+      MessageCounter.increase_message_count()
+    end)
 
     schedule_next_round()
     {:noreply, new_position}
