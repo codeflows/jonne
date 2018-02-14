@@ -3,7 +3,7 @@ defmodule Jonne.Application do
 
   def start(_type, _args) do
     children = [
-      Jonne.Notifier,
+      Jonne.Slack.Notifier,
       Jonne.Coordinator,
       Jonne.Statistics.Supervisor
     ]

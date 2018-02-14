@@ -1,7 +1,7 @@
 defmodule Jonne.Coordinator do
   use GenServer
   require Logger
-  alias Jonne.{Searcher, Notifier, Statistics.MessageCounter}
+  alias Jonne.{Searcher, Slack.Notifier, Statistics.MessageCounter}
 
   def start_link(_opts) do
     Logger.info("Coordinator starting up, poll interval #{poll_interval()}ms")

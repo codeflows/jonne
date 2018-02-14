@@ -1,4 +1,4 @@
-defmodule Jonne.Notifier do
+defmodule Jonne.Slack.Notifier do
   use GenServer
   require Logger
 
