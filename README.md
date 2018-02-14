@@ -27,6 +27,7 @@ SLACK_WEBHOOK_URL=https://hooks.slack.com/services/...
 
 - Alert message extraction / formatting should be configurable
 - Generalize notification consumers e.g. using Protocols
+- tzdata is downloaded on every startup
 - Buffer unsent messages
 - Don't repeat the same message (buffering in notifier?)
 
