@@ -31,11 +31,7 @@ defmodule Jonne.Coordinator do
   end
 
   defp poll_interval() do
-    interval = Application.get_env(:jonne, :elasticsearch_poll_interval, 10_000)
-    if is_integer(interval) do
-      interval
-    else
-      String.to_integer(interval)
-    end
+    interval = Application.get_env(:jonne, :elasticsearch_poll_interval, "10000")
+    String.to_integer(interval)
   end
 end
