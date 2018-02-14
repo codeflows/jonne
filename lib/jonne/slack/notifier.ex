@@ -3,6 +3,8 @@ defmodule Jonne.Slack.Notifier do
   require Logger
   @behaviour Jonne.Consumer
 
+  @notification_template Application.get_env(:jonne, :slack_notification_template, "<%= document[\"_index\"] %>: <%= document[\"_source\"][\"message\"] %>")
+
   def start_link(_opts) do
     GenServer.start_link(__MODULE__, :ok, name: Jonne.Slack.Notifier)
   end
@@ -14,12 +16,9 @@ defmodule Jonne.Slack.Notifier do
   end
 
   def handle_cast(document, _state) do
-    index = document["_index"]
-    # TODO jari: make mapping from document to alert text configurable
-    text = document["_source"]["message"]
-    notification_text = "#{index}: #{text}"
+    text = format_notification_text(document)
     slack_notification = %{
-      text: notification_text,
+      text: text,
       username: "jonne",
       icon_emoji: ":sunglasses:"
     }
@@ -29,13 +28,17 @@ defmodule Jonne.Slack.Notifier do
            Accept: "application/json"
          ) do
       {:ok, %{status_code: 200}} ->
-        Logger.debug("Sent notification for #{inspect text} successfully")
+        Logger.debug("Sent notification \"#{inspect text}\" successfully")
 
       error ->
         Logger.error("Error sending Slack notification: #{inspect(error)}")
     end
 
     {:noreply, []}
+  end
+
+  defp format_notification_text(document) do
+    EEx.eval_string @notification_template, [document: document]
   end
 
   defp slack_webhook_url() do; Application.get_env(:jonne, :slack_webhook_url); end
