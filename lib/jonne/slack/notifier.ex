@@ -14,10 +14,12 @@ defmodule Jonne.Slack.Notifier do
   end
 
   def handle_cast(document, _state) do
+    index = document["_index"]
+    # TODO jari: make mapping from document to alert text configurable
     text = document["_source"]["message"]
+    notification_text = "#{index}: #{text}"
     slack_notification = %{
-      # TODO jari: make mapping from document to alert text configurable
-      text: text,
+      text: notification_text,
       username: "jonne",
       icon_emoji: ":sunglasses:"
     }
