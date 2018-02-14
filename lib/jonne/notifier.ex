@@ -16,10 +16,15 @@ defmodule Jonne.Notifier do
 
   def handle_cast(document, _state) do
     text = document["_source"]["message"]
+    slack_notification = %{
+      # TODO jari: make mapping from document to alert text configurable
+      text: text,
+      username: "jonne",
+      icon_emoji: ":sunglasses:"
+    }
     case HTTPoison.post(
            slack_webhook_url(),
-           # TODO jari: make mapping from document to alert text configurable
-           Poison.encode!(%{text: text}),
+           Poison.encode!(slack_notification),
            Accept: "application/json"
          ) do
       {:ok, %{status_code: 200}} ->
