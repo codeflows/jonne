@@ -15,7 +15,7 @@ defmodule Jonne.Mixfile do
 
   def application do
     [
-      extra_applications: [:logger, :tzdata, :cowboy],
+      extra_applications: [:logger, :tzdata, :cowboy, :eex],
       mod: {Jonne.Application, []}
     ]
   end

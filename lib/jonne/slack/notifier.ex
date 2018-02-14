@@ -3,7 +3,7 @@ defmodule Jonne.Slack.Notifier do
   require Logger
   @behaviour Jonne.Consumer
 
-  @notification_template Application.get_env(:jonne, :slack_notification_template, "<%= document[\"_index\"] %>: <%= document[\"_source\"][\"message\"] %>")
+  @default_template "<%= document[\"_index\"] %>: <%= document[\"_source\"][\"message\"] %>"
 
   def start_link(_opts) do
     GenServer.start_link(__MODULE__, :ok, name: Jonne.Slack.Notifier)
@@ -38,8 +38,17 @@ defmodule Jonne.Slack.Notifier do
   end
 
   defp format_notification_text(document) do
-    EEx.eval_string @notification_template, [document: document]
+    EEx.eval_string slack_notification_template(), [document: document]
   end
 
   defp slack_webhook_url() do; Application.get_env(:jonne, :slack_webhook_url); end
+
+  defp slack_notification_template() do
+    template = Application.get_env(:jonne, :slack_notification_template, "")
+    if String.trim(template) == "" do
+      @default_template
+    else
+      template
+    end
+  end
 end
