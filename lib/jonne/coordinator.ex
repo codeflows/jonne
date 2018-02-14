@@ -1,7 +1,9 @@
 defmodule Jonne.Coordinator do
   use GenServer
   require Logger
-  alias Jonne.{Searcher, Slack.Notifier, Statistics.MessageCounter}
+  alias Jonne.Searcher
+
+  @consumers Application.get_env(:jonne, :consumers, [Jonne.Slack.Notifier, Jonne.Statistics.MessageCounter])
 
   def start_link(_opts) do
     Logger.info("Coordinator starting up, poll interval #{poll_interval()}ms")
@@ -18,8 +20,7 @@ defmodule Jonne.Coordinator do
     %{position: new_position, hits: hits} = Searcher.get_new_messages(Timex.now(), position)
 
     Enum.each(hits, fn document ->
-      Notifier.notify(document)
-      MessageCounter.increase_message_count()
+      Enum.each(@consumers, fn consumer -> consumer.consume(document) end)
     end)
 
     schedule_next_round()

@@ -1,14 +1,13 @@
 defmodule Jonne.Slack.Notifier do
   use GenServer
   require Logger
+  @behaviour Jonne.Consumer
 
   def start_link(_opts) do
-    GenServer.start_link(__MODULE__, :ok, name: Jonne.Notifier)
+    GenServer.start_link(__MODULE__, :ok, name: Jonne.Slack.Notifier)
   end
 
-  def notify(document) do
-    GenServer.cast(Jonne.Notifier, document)
-  end
+  def consume(document), do: GenServer.cast(Jonne.Slack.Notifier, document)
 
   def init(:ok) do
     {:ok, []}
