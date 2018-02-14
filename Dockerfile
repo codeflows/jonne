@@ -24,4 +24,5 @@ USER default
 
 EXPOSE 9001
 
-CMD REPLACE_OS_VARS=true /opt/app/bin/jonne foreground
+ENV REPLACE_OS_VARS=true
+CMD ["/opt/app/bin/jonne", "foreground"]
