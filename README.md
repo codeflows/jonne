@@ -33,10 +33,11 @@ SLACK_WEBHOOK_URL=https://hooks.slack.com/services/TODO
 SLACK_NOTIFICATION_TEMPLATE=Got document from index <%= document[\"_index\"] %>
 ```
 
-## Future ideas
+## Limitations and future ideas
 
-- tzdata is downloaded on every startup
-- Don't repeat the same message (buffering in notifier?)
+- Currently you can only have one query per instance
+- tzdata is downloaded on every startup inside the Docker container
+- Notifier does not buffer events but alerts on every one - don't repeat messages?
 
 ## Development
 
