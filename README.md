@@ -1,6 +1,6 @@
 # Jonne
 
-[![Build status](https://api.travis-ci.org/codeflows/jonne.svg?branch=master)](https://travis-ci.org/codeflows/jonne)
+[![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
 
 Jonne queries Elasticsearch and sends notifications for matching documents.
 Written in Elixir as a learning project.
